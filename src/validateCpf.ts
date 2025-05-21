@@ -5,6 +5,7 @@ export function validateCpf (cpf: string) {
 	cpf = clean(cpf);
 	if (cpf.length !== VALID_LENGTH) return false;
 	if (allDigitsEqual(cpf)) return false;
+	
 	const dg1 = calculateDigit(cpf, 10);
 	const dg2 = calculateDigit(cpf, 11);
 	return extractDigit(cpf) == `${dg1}${dg2}`;
