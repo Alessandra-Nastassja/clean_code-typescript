@@ -26,23 +26,24 @@ function isValidPassword (password: string) {
 }
 
 app.post("/signup", async (req: Request, res: Response) => {
-    const input = req.body;
-    if (!isValidName(input.name)) {
+    const { name, email, document, password } = req.body;
+
+    if (!isValidName(name)) {
         return res.status(422).json({
             error: "Invalid name"
         });
     }
-    if (!isValidEmail(input.email)) {
+    if (!isValidEmail(email)) {
         return res.status(422).json({
             error: "Invalid email"
         });
     }
-    if (!validateCpf(input.document)) {
+    if (!validateCpf(document)) {
         return res.status(422).json({
             error: "Invalid document"
         });
     }
-    if (!isValidPassword(input.password)) {
+    if (!isValidPassword(password)) {
         return res.status(422).json({
             error: "Invalid password"
         });
@@ -50,10 +51,10 @@ app.post("/signup", async (req: Request, res: Response) => {
     const accountId = crypto.randomUUID();
     const account = {
         accountId,
-        name: input.name,
-        email: input.email,
-        document: input.document,
-        password: input.password
+        name,
+        email,
+        document,
+        password
     }
     // accounts.push(account);
     await connection.query("insert into ccca.account (account_id, name, email, document, password) values ($1, $2, $3, $4, $5)", [account.accountId, account.name, account.email, account.document, account.password]);
